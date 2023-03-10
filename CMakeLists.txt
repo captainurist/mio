@@ -39,7 +39,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # 1. It DOES NOT propegate to parent scopes (such as parent projects)
 # 2. It hides cache variables of the same name for this directory and below
 #
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #

@@ -52,14 +52,16 @@ inline DWORD int64_low(int64_t n) noexcept
     return n & 0xffffffff;
 }
 
-inline std::wstring s_2_ws(const std::string& s)
+template<typename String>
+inline std::wstring s_2_ws(const String& s)
 {
     std::wstring ret;
-    if (!s.empty())
+    if (!detail::empty(s))
     {
-        ret.resize(s.size());
-        int wide_char_count = MultiByteToWideChar(CP_UTF8, 0, s.c_str(),
-            static_cast<int>(s.size()), &ret[0], static_cast<int>(s.size()));
+        size_t size = detail::size(s);
+        ret.resize(size);
+        int wide_char_count = MultiByteToWideChar(CP_UTF8, 0, c_str(s),
+            static_cast<int>(size), &ret[0], static_cast<int>(size));
         ret.resize(wide_char_count);
     }
     return ret;

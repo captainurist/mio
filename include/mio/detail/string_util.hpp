@@ -21,6 +21,7 @@
 #ifndef MIO_STRING_UTIL_HEADER
 #define MIO_STRING_UTIL_HEADER
 
+#include <cstring>
 #include <type_traits>
 
 namespace mio {
@@ -150,6 +151,15 @@ template<
 
 template<
     typename String,
+    typename = decltype(std::declval<String>().size()),
+    typename = typename std::enable_if<!is_c_str_or_c_wstr<String>::value>::type
+> size_t size(const String& path)
+{
+    return path.size();
+}
+
+template<
+    typename String,
     typename = typename std::enable_if<is_c_str_or_c_wstr<String>::value>::type
 > const typename char_type<String>::type* c_str(String path)
 {
@@ -163,6 +173,18 @@ template<
 {
     return !path || (*path == 0);
 }
+
+inline size_t size(const char* path)
+{
+    return path ? strlen(path) : 0;
+}
+
+#ifdef _WIN32
+inline size_t size(const wchar_t* path)
+{
+    return path ? wcslen(path) : 0;
+}
+#endif // _WIN32
 
 } // namespace detail
 } // namespace mio

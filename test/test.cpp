@@ -16,8 +16,9 @@
 #endif
 
 // Just make sure this compiles.
-#ifdef CXX17
+#if __cplusplus >= 201703L
 # include <cstddef>
+# include <string_view>
 using mmap_source = mio::basic_mmap_source<std::byte>;
 #endif
 
@@ -125,6 +126,18 @@ int main()
         mio::mmap_source _fdmmap(fd, 0, mio::map_entire_file);
         _fdmmap.unmap();
         _fdmmap.map(fd, error);
+#endif
+#if __cplusplus >= 201703L
+        const std::string_view path2 = path;
+        auto _10 = mio::make_mmap_source(path2, error);
+        mio::mmap_source _11;
+        _11.map(path2, error);
+# ifdef _WIN32
+        const std::wstring_view wpath3 = wpath2;
+        auto _12 = mio::make_mmap_source(wpath3, error);
+        mio::mmap_source _13;
+        _13.map(wpath3, error);
+# endif
 #endif
     }
 
